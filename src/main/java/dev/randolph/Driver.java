@@ -12,6 +12,20 @@ public class Driver {
         // End Points
         
         /*
+         * === POST ===
+         */
+        
+        // POST - create new client
+        app.post("/clients", ctx -> {
+            
+        });
+        
+        // POST - create new account for client 'cid'
+        app.post("/clients/{cid}/accounts", ctx -> {
+            
+        });
+        
+        /*
          * === GET ===
          */
         
@@ -37,20 +51,6 @@ public class Driver {
         
         // GET account 'aid' from client 'cid'
         app.get("/clients/{cid}/accounts/{aid}", ctx -> {
-            
-        });
-        
-        /*
-         * === POST ===
-         */
-        
-        // POST - create new client
-        app.post("/clients", ctx -> {
-            
-        });
-        
-        // POST - create new account for client 'cid'
-        app.post("/clients/{cid}/accounts", ctx -> {
             
         });
         

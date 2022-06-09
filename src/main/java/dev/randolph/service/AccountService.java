@@ -1,24 +1,27 @@
-package dev.randolph.repo;
+package dev.randolph.service;
 
 import java.util.List;
 
 import dev.randolph.model.Account;
+import dev.randolph.repo.AccountDAO;
 
-public class AccountDAO {
+public class AccountService {
+    
+    AccountDAO accountDao = new AccountDAO();
     
     /*
-     * === CREATE ===
+     * === POST / CREATE ===
      */
     
-    public Account createNewAccount(Account account) {
+    public Account createNewAccount() {
         return null;
     }
     
     /*
-     * === READ ===
+     * === GET / READ ===
      */
     
-    public List<Account> getAllAccountsOfClient(int cid) {
+    public List<Account> getAccountsOfClient(int cid) {
         return null;
     }
     
@@ -31,7 +34,7 @@ public class AccountDAO {
     }
     
     /*
-     * === UPDATE ===
+     * === PUT / UPDATE ===
      */
     
     public Account setAccountAmount() {
@@ -53,5 +56,5 @@ public class AccountDAO {
     public boolean deleteAccountOfClientById(int cid, int aid) {
         return false;
     }
-
+    
 }

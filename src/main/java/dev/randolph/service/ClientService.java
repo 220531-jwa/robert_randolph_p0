@@ -1,21 +1,24 @@
-package dev.randolph.repo;
+package dev.randolph.service;
 
 import java.util.List;
 
 import dev.randolph.model.Client;
+import dev.randolph.repo.ClientDAO;
 
-public class ClientDAO {
+public class ClientService {
+    
+    private ClientDAO clientDao = new ClientDAO();
     
     /*
-     * === CREATE ===
+     * === POST / CREATE ===
      */
     
-    public Client createNewClient(Client client) {
+    public Client createNewClient() {
         return null;
     }
     
     /*
-     * === READ ===
+     * === GET / READ ===
      */
     
     public List<Client> getAllClients() {
@@ -27,7 +30,7 @@ public class ClientDAO {
     }
     
     /*
-     * === UPDATE ===
+     * === PUT / UPDATE ===
      */
     
     public Client updateClientById(int cid) {
