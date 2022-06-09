@@ -30,7 +30,7 @@ public class ClientDAO {
      * === UPDATE ===
      */
     
-    public Client updateClientById(int cid) {
+    public Client updateClient(Client client) {
         return null;
     }
     

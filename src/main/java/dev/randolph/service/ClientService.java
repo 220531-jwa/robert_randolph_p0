@@ -106,7 +106,7 @@ public class ClientService {
         if (client != null) {
             // Found client
             // TODO update client -> push update to DB
-            clientDao.updateClientById(client);
+            clientDao.updateClient(client);
         }
         
         return client;
