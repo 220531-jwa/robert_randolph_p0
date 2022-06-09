@@ -1,5 +1,9 @@
 package dev.randolph;
 
+import static io.javalin.apibuilder.ApiBuilder.*;
+
+import dev.randolph.controller.AccountController;
+import dev.randolph.controller.ClientController;
 import io.javalin.Javalin;
 
 public class Driver {
@@ -9,89 +13,34 @@ public class Driver {
         Javalin app = Javalin.create();
         app.start();
         
-        // End Points
+        // Init
+        ClientController cc = new ClientController();
+        AccountController ac = new AccountController();
         
-        /*
-         * === POST ===
-         */
-        
-        // POST - create new client
-        app.post("/clients", ctx -> {
-            
-        });
-        
-        // POST - create new account for client 'cid'
-        app.post("/clients/{cid}/accounts", ctx -> {
-            
-        });
-        
-        /*
-         * === GET ===
-         */
-        
-        // GET all clients
-        app.get("/clients", ctx -> {
-            
-        });
-        
-        // GET client by Id
-        app.get("/clients/{id}", ctx -> {
-            
-        });
-        
-        // GET all accounts for client 'cid'
-        app.get("/clients/{cid}/accounts", ctx -> {
-            
-        });
-        
-        // GET all accounts for client 'cid' with amount between range(num1, num2);
-        app.get("/clients/{cid}/accounts???", ctx -> {
-            
-        });
-        
-        // GET account 'aid' from client 'cid'
-        app.get("/clients/{cid}/accounts/{aid}", ctx -> {
-            
-        });
-        
-        /*
-         * === PUT ===
-         */
-        
-        // PUT - update client 'cid'
-        app.put("/clients/{cid}", ctx -> {
-            
-        });
-        
-        // PUT - update amount of account 'aid' of client 'cid'
-        app.put("/clients/{cid}/accounts/{aid}", ctx -> {
-            
-        });
-        
-        // === DELETE ===
-        
-        // DELETE client 'cid'
-        app.delete("/clients/{cid}", ctx -> {
-            
-        });
-        
-        // DELETE account 'aid' of client 'cid'
-        app.delete("clients/{cid}/accounts/{aid}", ctx -> {
-            
-        });
-        
-        /*
-         * === PATCH ===
-         */
-        
-        // PATCH - withdraw/deposit amount of account 'aid' of client 'cid'
-        app.patch("/clients/{cid}/accounts/{aid}", ctx -> {
-            
-        });
-        
-        // PATCH - transfer amount of account 'aid' of client 'cid' to account 'taid'
-        app.patch("clients/{cid}/accounts/{aid}/transfre/{taid}", ctx -> {
-            
+        // Endpoints
+        app.routes(() -> {
+            path("/clients", () -> {
+                post(cc::createNewClient);
+                get(cc::getAllClients);
+                path("/{cid}", () -> {
+                    get(cc::getClientById);
+                    put(cc::updateClientById);
+                    delete(cc::deleteClientById);
+                    path("/accounts", () -> {
+                        post(ac::createNewAccount);
+                        get(ac::getAllClientAccounts);
+                        path("/{aid}", () -> {
+                            get(ac::getClientAccountById);
+                            put(ac::setAccountAmount);
+                            delete(ac::deleteClientAccountById);
+                            patch(ac::updateAccountAmount);
+                            path("/transfer", () -> {
+                                patch(ac::transferAccountAmount);
+                            });
+                        });
+                    });
+                });
+            });
         });
     }
 }

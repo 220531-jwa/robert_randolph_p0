@@ -22,11 +22,7 @@ public class AccountDAO {
         return null;
     }
     
-    public List<Account> getAllAccountsOfClientInAmountRange(int cid) {
-        return null;
-    }
-    
-    public Account getAccountOfClientById(int cid, int aid) {
+    public Account getClientAccountById(int cid, int aid) {
         return null;
     }
     
@@ -50,7 +46,7 @@ public class AccountDAO {
      * === DELETE ===
      */
     
-    public boolean deleteAccountOfClientById(int cid, int aid) {
+    public boolean deleteClientAccountById(int cid, int aid) {
         return false;
     }
 

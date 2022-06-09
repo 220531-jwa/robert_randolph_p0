@@ -19,15 +19,11 @@ public class AccountController {
      * === GET ===
      */
     
-    public void getAccountsOfClient(Context ctx) {
-        
+    public void getAllClientAccounts(Context ctx) {
+        // TODO: Also handles the amount ranges below
     }
     
-    public void getAllAccountsOfClientInAmountRange(Context ctx) {
-        
-    }
-    
-    public void getAccountOfClientById(Context ctx) {
+    public void getClientAccountById(Context ctx) {
         
     }
     
@@ -51,7 +47,7 @@ public class AccountController {
      * === DELETE ===
      */
     
-    public void deleteAccountOfClientById(Context ctx) {
+    public void deleteClientAccountById(Context ctx) {
         
     }
 
