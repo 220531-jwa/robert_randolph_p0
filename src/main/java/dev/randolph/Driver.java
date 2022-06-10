@@ -1,6 +1,13 @@
 package dev.randolph;
 
-import static io.javalin.apibuilder.ApiBuilder.*;
+import static io.javalin.apibuilder.ApiBuilder.delete;
+import static io.javalin.apibuilder.ApiBuilder.get;
+import static io.javalin.apibuilder.ApiBuilder.patch;
+import static io.javalin.apibuilder.ApiBuilder.path;
+import static io.javalin.apibuilder.ApiBuilder.post;
+import static io.javalin.apibuilder.ApiBuilder.put;
+
+import java.util.TreeSet;
 
 import dev.randolph.controller.AccountController;
 import dev.randolph.controller.ClientController;
@@ -16,6 +23,8 @@ public class Driver {
         // Init
         ClientController cc = new ClientController();
         AccountController ac = new AccountController();
+        
+        TreeSet<Integer> test = new TreeSet<Integer>();
         
         // Endpoints
         app.routes(() -> {
@@ -42,5 +51,7 @@ public class Driver {
                 });
             });
         });
+        
+        // End of endpoints
     }
 }

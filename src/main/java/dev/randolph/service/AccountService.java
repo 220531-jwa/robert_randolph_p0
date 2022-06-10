@@ -10,6 +10,10 @@ public class AccountService {
     
     private AccountDAO accountDao = new AccountDAO();
     
+    public AccountService() {
+        
+    }
+    
     /*
      * === POST / CREATE ===
      */

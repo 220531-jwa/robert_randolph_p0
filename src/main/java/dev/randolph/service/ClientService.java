@@ -9,35 +9,6 @@ import dev.randolph.repo.ClientDAO;
 public class ClientService {
     
     private ClientDAO clientDao = new ClientDAO();
-    private TreeSet<Integer> gapIds = new TreeSet<Integer>();
-    private int nextId = 0;
-    
-    /**
-     * Will determine which ids are available for use.
-     */
-    public ClientService() {
-        // Init
-        List<Client> clients = clientDao.getAllClients();
-        TreeSet<Integer> usedIds = new TreeSet<Integer>();
-        
-        // Find which client ids are used
-        for (Client client: clients) {
-            usedIds.add(client.getId());
-        }
-        
-        // Finding gaps between 0 - largestId
-        if (usedIds.size() - 1 != usedIds.last()) {
-            // There are gaps
-            for (int i = 0; i < usedIds.last(); i++) {
-                if (!usedIds.contains(i)) {
-                    gapIds.add(i);
-                }
-            }
-        }
-        
-        // Next Id
-        nextId = usedIds.last() + 1;
-    }
     
     /*
      * === POST / CREATE ===
@@ -50,17 +21,7 @@ public class ClientService {
      * @return A client if created successfully, and null otherwise.
      */
     public Client createNewClient() {
-        // Init
-        int id = getNextId();
-        Client client = clientDao.createNewClient(new Client(id)); // Adding new client to DB
-        
-        // Checking if new client was added successfully
-        if (client == null) {
-            // Failed to add new client
-            gapIds.add(id);
-        }
-        
-        return client;
+        return clientDao.createNewClient(new Client(0));
     }
     
     /*
@@ -127,38 +88,6 @@ public class ClientService {
             return false;
         }
         
-        // Init
-        boolean success = clientDao.deleteClientById(cid);
-        
-        // Checking if client was deleted successfully
-        if (success) {
-            // Successful
-            gapIds.add(cid);
-        }
-        
-        return success;
+        return clientDao.deleteClientById(cid);
     }
-    
-    /*
-     * === Utility ===
-     */
-    
-    /**
-     * Returns an available client ID that can be used.
-     * If there was a deletion then that ID is now available and will be returned instead.
-     * Otherwise will return a new id.
-     * @return The client ID to use.
-     */
-    private int getNextId() {
-        // Checking if there are gaps
-        if (gapIds.isEmpty()) {
-            // No gaps
-            return nextId++;
-        }
-        else {
-            // Gap
-            return gapIds.pollFirst();
-        }
-    }
-
 }
