@@ -20,12 +20,12 @@ public class ClientDAO {
     
     public Client createNewClient(Client client) {
         // Init
-        String stmt = "INSERT INTO clients VALUES (default) returning *";
+        String sql = "INSERT INTO clients VALUES (default) RETURNING *";
         
         // Executing query
         try (Connection conn = cu.getConnection()) {
             // Getting results
-            ResultSet rs = conn.prepareStatement(stmt).executeQuery();
+            ResultSet rs = conn.prepareStatement(sql).executeQuery();
             
             // Going through results
             if (rs.next()) {
@@ -49,13 +49,13 @@ public class ClientDAO {
     
     public List<Client> getAllClients() {
         // Init
-        String stmt = "SELECT * FROM clients";
+        String sql = "SELECT * FROM clients";
         ArrayList<Client> clients = null;
         
         // Executing query
         try (Connection conn = cu.getConnection()) {
             // Getting results
-            ResultSet rs = conn.prepareStatement(stmt).executeQuery();
+            ResultSet rs = conn.prepareStatement(sql).executeQuery();
             
             // Going through results
             if (rs.next()) {
@@ -79,13 +79,13 @@ public class ClientDAO {
      */
     public Client getClientById(int cid) {
         // Init
-        String stmt = "SELECT * FROM clients where id = ?";
+        String sql = "SELECT * FROM clients where id = ?";
         Client client = null;
         
         // Executing query
         try (Connection conn = cu.getConnection()) {
             // Getting results
-            PreparedStatement ps = conn.prepareStatement(stmt);
+            PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, cid);
             ResultSet rs = ps.executeQuery();
             
@@ -105,8 +105,30 @@ public class ClientDAO {
      * === UPDATE ===
      */
     
-    public Client updateClient(Client client) {
-        return null;
+    public Client updateClient(int cid) {
+        // init
+        String sql = "UPDATE clients SET id = ? WHERE id = ? RETURNING *";
+        Client client = null;
+        
+        // Executing query
+        try (Connection conn = cu.getConnection()) {
+            // Getting results
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, cid);
+            ps.setInt(2, cid);
+            ResultSet rs = ps.executeQuery();
+            
+            // Going through results
+            if (rs.next()) {
+                // Client updated
+                client = new Client(rs.getInt("id"));
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return client;
     }
     
     /*
@@ -114,7 +136,27 @@ public class ClientDAO {
      */
     
     public boolean deleteClientById(int cid) {
-        return false;
+        // Init
+        String sql = "DELETE FROM clients WHERE id = ?";
+        boolean success = false;
+        
+        // Executing query
+        try (Connection conn = cu.getConnection()) {
+            // Getting results
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, cid);
+            ResultSet rs = ps.executeQuery();
+            
+            // Going through results
+            if (rs.next()) {
+                // Deletion successful
+                success = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return success;
     }
     
 }

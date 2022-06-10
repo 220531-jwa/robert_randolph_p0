@@ -60,17 +60,7 @@ public class ClientService {
             return null;
         }
         
-        // Init
-        Client client = clientDao.getClientById(cid);
-        
-        // Checking if client exists
-        if (client != null) {
-            // Found client
-            // TODO update client -> push update to DB
-            clientDao.updateClient(client);
-        }
-        
-        return client;
+        return clientDao.updateClient(cid);
     }
     
     /*

@@ -52,7 +52,20 @@ public class ClientController {
     }
     
     public void getClientById(Context ctx) {
+        // Init
+        int cid = Integer.parseInt(ctx.pathParam("cid"));
+        Client client = clientService.getClientById(cid);
         
+        // Checking if client was found
+        if (client == null) {
+            // No client found
+            ctx.status(404);
+        }
+        else {
+            // Client found
+            ctx.status(200);
+            ctx.json(client);
+        }
     }
     
     /*
@@ -60,15 +73,40 @@ public class ClientController {
      */
     
     public void updateClientById(Context ctx) {
+        // Init
+        int cid = Integer.parseInt(ctx.pathParam("cid"));
+        Client client = clientService.updateClientById(cid);
         
+        // Checking if client was updated
+        if (client == null) {
+            // Failed to update client
+            ctx.status(404);
+        }
+        else {
+            // Successfully updated client
+            ctx.status(200);
+            ctx.json(client);
+        }
     }
     
     /*
      * === DELETE ===
      */
     
-    public void deleteClientById(Context cts) {
+    public void deleteClientById(Context ctx) {
+        // Init
+        int cid = Integer.parseInt(ctx.pathParam("cid"));
+        boolean success = clientService.deleteClientById(cid);
         
+        // Checking if client was updated
+        if (!success) {
+            // Failed to update client
+            ctx.status(404);
+        }
+        else {
+            // Successfully updated client
+            ctx.status(205);
+        }
     }
 
 }
