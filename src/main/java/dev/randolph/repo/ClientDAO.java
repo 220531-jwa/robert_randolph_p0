@@ -145,10 +145,10 @@ public class ClientDAO {
             // Getting results
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, cid);
-            ResultSet rs = ps.executeQuery();
+            int changes = ps.executeUpdate();
             
             // Going through results
-            if (rs.next()) {
+            if (changes != 0) {
                 // Deletion successful
                 success = true;
             }

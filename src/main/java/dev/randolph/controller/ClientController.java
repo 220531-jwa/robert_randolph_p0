@@ -98,13 +98,13 @@ public class ClientController {
         int cid = Integer.parseInt(ctx.pathParam("cid"));
         boolean success = clientService.deleteClientById(cid);
         
-        // Checking if client was updated
+        // Checking if client was deleted
         if (!success) {
-            // Failed to update client
+            // Failed to delete client
             ctx.status(404);
         }
         else {
-            // Successfully updated client
+            // Successfully deleted client
             ctx.status(205);
         }
     }
