@@ -1,7 +1,6 @@
 package dev.randolph.service;
 
 import java.util.List;
-import java.util.TreeSet;
 
 import dev.randolph.model.Client;
 import dev.randolph.repo.ClientDAO;

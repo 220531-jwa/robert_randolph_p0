@@ -7,10 +7,9 @@ import static io.javalin.apibuilder.ApiBuilder.path;
 import static io.javalin.apibuilder.ApiBuilder.post;
 import static io.javalin.apibuilder.ApiBuilder.put;
 
-import java.util.TreeSet;
-
 import dev.randolph.controller.AccountController;
 import dev.randolph.controller.ClientController;
+import dev.randolph.repo.AccountType;
 import io.javalin.Javalin;
 
 public class Driver {
@@ -23,6 +22,8 @@ public class Driver {
         // Init
         ClientController cc = new ClientController();
         AccountController ac = new AccountController();
+        
+        AccountType type = AccountType.CHECKING;
         
         // Endpoints
         app.routes(() -> {
