@@ -8,7 +8,7 @@ import dev.randolph.repo.ClientDAO;
 
 public class ClientService {
     
-    private ClientDAO clientDao = new ClientDAO();
+    private ClientDAO cd = new ClientDAO();
     
     /*
      * === POST / CREATE ===
@@ -20,8 +20,13 @@ public class ClientService {
      * If a client was previously deleted, then that id will be used instead of a new one.
      * @return A client if created successfully, and null otherwise.
      */
-    public Client createNewClient() {
-        return clientDao.createNewClient(new Client(0));
+    public Client createNewClient(Client client) {
+        // Validating input
+        if (client == null) {
+            return null;
+        }
+        
+        return cd.createNewClient(client);
     }
     
     /*
@@ -30,10 +35,10 @@ public class ClientService {
     
     /**
      * Returns a list of clients from the database.
-     * @return A list of clients.
+     * @return A list of clients, and null otherwise.
      */
     public List<Client> getAllClients() {
-        return clientDao.getAllClients();
+        return cd.getAllClients();
     }
     
     /**
@@ -47,20 +52,25 @@ public class ClientService {
             return null;
         }
         
-        return clientDao.getClientById(cid);
+        return cd.getClientById(cid);
     }
     
     /*
      * === PUT / UPDATE ===
      */
     
-    public Client updateClientById(int cid) {
+    /**
+     * Updates a client in the database.
+     * @param client The client to update alonge with the updated information.
+     * @return The updated client if successful, and null otherwise.
+     */
+    public boolean updateClientById(Client client) {
         // Validating input
-        if (cid < 0) {
-            return null;
+        if (client == null) {
+            return false;
         }
         
-        return clientDao.updateClient(cid);
+        return cd.updateClient(client);
     }
     
     /*
@@ -78,6 +88,6 @@ public class ClientService {
             return false;
         }
         
-        return clientDao.deleteClientById(cid);
+        return cd.deleteClientById(cid);
     }
 }

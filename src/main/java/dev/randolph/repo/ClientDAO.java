@@ -18,22 +18,32 @@ public class ClientDAO {
      * === CREATE ===
      */
     
+    /**
+     * Inserts a new client into the database.
+     * @param client The client to enter into the database. (Ignores ID)
+     * @return The client that was added to the database.
+     */
     public Client createNewClient(Client client) {
         // Init
-        String sql = "INSERT INTO clients VALUES (default) RETURNING *";
+        String sql = "INSERT INTO clients VALUES"
+                + " (default, ?, ?)"
+                + " RETURNING *";
         
         // Executing query
         try (Connection conn = cu.getConnection()) {
             // Getting results
-            ResultSet rs = conn.prepareStatement(sql).executeQuery();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, client.getFirstName());
+            ps.setString(2, client.getLastName());
+            ResultSet rs = ps.executeQuery();
             
             // Going through results
             if (rs.next()) {
-                // Client successfully added
+                // Successfully created client
                 client.setId(rs.getInt("id"));
             }
             else {
-                // Failed to add client
+                // Failed to create client
                 client = null;
             }
         } catch (SQLException e) {
@@ -47,9 +57,13 @@ public class ClientDAO {
      * === READ ===
      */
     
+    /**
+     * Gets all the clients in the database.
+     * @return A list of clients, or null if none was retrieved.
+     */
     public List<Client> getAllClients() {
         // Init
-        String sql = "SELECT * FROM clients";
+        String sql = "SELECT * FROM clients ORDER BY id";
         ArrayList<Client> clients = null;
         
         // Executing query
@@ -62,7 +76,9 @@ public class ClientDAO {
                 // Found clients
                 clients = new ArrayList<Client>();
                 do {
-                    clients.add(new Client(rs.getInt("id")));
+                    clients.add(new Client(rs.getInt("id"),
+                            rs.getString("first_name"),
+                            rs.getString("last_name")));
                 } while (rs.next());
             }
         } catch (SQLException e) {
@@ -79,7 +95,8 @@ public class ClientDAO {
      */
     public Client getClientById(int cid) {
         // Init
-        String sql = "SELECT * FROM clients where id = ?";
+        String sql = "SELECT * FROM clients"
+                + " WHERE id = ?";
         Client client = null;
         
         // Executing query
@@ -92,7 +109,9 @@ public class ClientDAO {
             // Going through results
             if (rs.next()) {
                 // Client found
-                client = new Client(rs.getInt("id"));
+                client = new Client(rs.getInt("id"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -105,39 +124,51 @@ public class ClientDAO {
      * === UPDATE ===
      */
     
-    public Client updateClient(int cid) {
+    /**
+     * Updates the client with the given client id, along with updated information.
+     * @param client The client to update
+     * @return True if the client was updated successfully, and false otherwise.
+     */
+    public boolean updateClient(Client client) {
         // init
-        String sql = "UPDATE clients SET id = ? WHERE id = ? RETURNING *";
-        Client client = null;
+        String sql = "UPDATE clients"
+                + " SET (first_name, last_name) = (?, ?)"
+                + " WHERE id = ?";
         
         // Executing query
         try (Connection conn = cu.getConnection()) {
             // Getting results
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, cid);
-            ps.setInt(2, cid);
-            ResultSet rs = ps.executeQuery();
+            ps.setString(1, client.getFirstName());
+            ps.setString(2, client.getLastName());
+            ps.setInt(3, client.getId());
+            int changes = ps.executeUpdate();
             
             // Going through results
-            if (rs.next()) {
-                // Client updated
-                client = new Client(rs.getInt("id"));
+            if (changes != 0) {
+                // Successfully updated client
+                return true;
             }
-            
         } catch (SQLException e) {
             e.printStackTrace();
         }
         
-        return client;
+        return false;
     }
     
     /*
      * === DELETE ===
      */
     
+    /**
+     * Deletes the client with the given client id.
+     * @param cid The client to delete.
+     * @return True if the client was successfully deleted, and false otherwise.
+     */
     public boolean deleteClientById(int cid) {
         // Init
-        String sql = "DELETE FROM clients WHERE id = ?";
+        String sql = "DELETE FROM clients"
+                + " WHERE id = ?";
         boolean success = false;
         
         // Executing query

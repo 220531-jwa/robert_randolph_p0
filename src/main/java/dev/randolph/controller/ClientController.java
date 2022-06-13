@@ -8,19 +8,27 @@ import io.javalin.http.Context;
 
 public class ClientController {
     
-    private ClientService clientService = new ClientService();
+    private ClientService cs = new ClientService();
     
     /*
      * === POST ===
      */
     
+    /**
+     * Creates a new client to add to the database.
+     * Takes the firstName, and lastName from the request body.
+     * @param ctx The http request/response.
+     * @return A 201 response with the client in the body if successful. 503 otherwise.
+     */
     public void createNewClient(Context ctx) {
         // Init
-        Client client = clientService.createNewClient();
+        Client client = ctx.bodyAsClass(Client.class);
+        client = cs.createNewClient(client);
         
         // Checking if new client was created successfully
         if (client == null) {
             // Failed to create new client
+            // Service unavailable
             ctx.status(503);
         }
         else {
@@ -34,9 +42,14 @@ public class ClientController {
      * === GET ===
      */
     
+    /**
+     * Retrieves all the clients in the database.
+     * @param ctx The http request/response.
+     * @return A 200 response with the clients in the body.
+     */
     public void getAllClients(Context ctx) {
         // Init
-        List<Client> clients = clientService.getAllClients();
+        List<Client> clients = cs.getAllClients();
         
         // Checking if any clients where found
         if (clients == null) {
@@ -46,15 +59,21 @@ public class ClientController {
         else {
             // Clients found
             ctx.status(200);
-            ctx.json(clientService.getAllClients());
+            ctx.json(cs.getAllClients());
         }
         
     }
     
+    /**
+     * Gets a client by a specific id.
+     * Takes the id of the client.
+     * @param ctx the http request/response.
+     * @return A 200 response with the client in the body if successful, and 404 otherwise.
+     */
     public void getClientById(Context ctx) {
         // Init
         int cid = Integer.parseInt(ctx.pathParam("cid"));
-        Client client = clientService.getClientById(cid);
+        Client client = cs.getClientById(cid);
         
         // Checking if client was found
         if (client == null) {
@@ -72,20 +91,28 @@ public class ClientController {
      * === PUT ===
      */
     
+    /**
+     * Updates a client by a specific id.
+     * Takes the id of the client.
+     * Takes the firstName and lastName from the body.
+     * @param ctx the http request/response.
+     * @return A 204 response if client was updated successfully, and 404 otherwise.
+     */
     public void updateClientById(Context ctx) {
         // Init
         int cid = Integer.parseInt(ctx.pathParam("cid"));
-        Client client = clientService.updateClientById(cid);
+        Client client = ctx.bodyAsClass(Client.class);
+        client.setId(cid);
+        boolean success = cs.updateClientById(client);
         
         // Checking if client was updated
-        if (client == null) {
+        if (!success) {
             // Failed to update client
             ctx.status(404);
         }
         else {
             // Successfully updated client
-            ctx.status(200);
-            ctx.json(client);
+            ctx.status(204);
         }
     }
     
@@ -93,10 +120,16 @@ public class ClientController {
      * === DELETE ===
      */
     
+    /**
+     * Deletes a client by a specifc id.
+     * Takes the id of the client.
+     * @param ctx the http request/response.
+     * @return A 205 response if client was deleted successfully, and 404 otherwise.
+     */
     public void deleteClientById(Context ctx) {
         // Init
         int cid = Integer.parseInt(ctx.pathParam("cid"));
-        boolean success = clientService.deleteClientById(cid);
+        boolean success = cs.deleteClientById(cid);
         
         // Checking if client was deleted
         if (!success) {

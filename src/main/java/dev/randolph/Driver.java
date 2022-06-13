@@ -24,8 +24,6 @@ public class Driver {
         ClientController cc = new ClientController();
         AccountController ac = new AccountController();
         
-        TreeSet<Integer> test = new TreeSet<Integer>();
-        
         // Endpoints
         app.routes(() -> {
             path("/clients", () -> {
@@ -40,10 +38,10 @@ public class Driver {
                         get(ac::getAllClientAccounts);
                         path("/{aid}", () -> {
                             get(ac::getClientAccountById);
-                            put(ac::setAccountAmount);
+                            put(ac::updateClientAccountById);
                             delete(ac::deleteClientAccountById);
                             patch(ac::updateAccountAmount);
-                            path("/transfer", () -> {
+                            path("/transfer{tid}", () -> {
                                 patch(ac::transferAccountAmount);
                             });
                         });
