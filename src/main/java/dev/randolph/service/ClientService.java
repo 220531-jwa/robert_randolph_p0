@@ -16,7 +16,7 @@ public class ClientService {
     /**
      * Creates a new client that will be inserted into the database.
      * Each client will have a unique id.
-     * If a client was previously deleted, then that id will be used instead of a new one.
+     * @param client The client to create.
      * @return A client if created successfully, and null otherwise.
      */
     public Client createNewClient(Client client) {
@@ -25,6 +25,7 @@ public class ClientService {
             return null;
         }
         
+        // Creating client
         return cd.createNewClient(client);
     }
     
