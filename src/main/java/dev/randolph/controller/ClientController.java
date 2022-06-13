@@ -45,7 +45,7 @@ public class ClientController {
     /**
      * Retrieves all the clients in the database.
      * @param ctx The http request/response.
-     * @return A 200 response with the clients in the body.
+     * @return A 200 response with the clients in the body, and 404 otherwise
      */
     public void getAllClients(Context ctx) {
         // Init
@@ -54,7 +54,7 @@ public class ClientController {
         // Checking if any clients where found
         if (clients == null) {
             // No clients found
-            ctx.status(200);
+            ctx.status(404);
         }
         else {
             // Clients found
