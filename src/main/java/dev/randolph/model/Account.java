@@ -1,17 +1,21 @@
 package dev.randolph.model;
 
+import dev.randolph.repo.AccountType;
+
 public class Account {
     
     private int id;
     private int clientId;
-    private double amount;
+    private AccountType accountType;
+    private double balance;
     
     public Account() {}
     
-    public Account(int id, int clientId, double amount) {
+    public Account(int id, int clientId, AccountType accountType, double balance) {
         this.id = id;
         this.clientId = clientId;
-        this.amount = amount;
+        this.accountType = accountType;
+        this.balance = balance;
     }
 
     public int getId() {
@@ -30,17 +34,26 @@ public class Account {
         this.clientId = clientId;
     }
 
-    public double getAmount() {
-        return amount;
+    public AccountType getAccountType() {
+        return accountType;
     }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 
     @Override
     public String toString() {
-        return "Account [id=" + id + ", clientId=" + clientId + ", amount=" + amount + "]";
+        return "Account [id=" + id + ", clientId=" + clientId + ", accountType=" + accountType + ", balance=" + balance
+                + "]";
     }
 
 }

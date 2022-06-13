@@ -41,9 +41,9 @@ public class Driver {
                             get(ac::getClientAccountById);
                             put(ac::updateClientAccountById);
                             delete(ac::deleteClientAccountById);
-                            patch(ac::updateAccountAmount);
+                            patch(ac::updateClientAccountBalance);
                             path("/transfer{tid}", () -> {
-                                patch(ac::transferAccountAmount);
+                                patch(ac::transferClientAccountFunds);
                             });
                         });
                     });
