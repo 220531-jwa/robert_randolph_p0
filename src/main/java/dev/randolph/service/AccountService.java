@@ -79,6 +79,12 @@ public class AccountService {
         }
         else {
             // Range given
+            // Checking if range is valid
+            if (lowerBound > upperBound) {
+                // Invalid range
+                return null;
+            }
+            
             accounts = ad.getAllClientAccountsInBalanceRange(cid, lowerBound, upperBound);
         }
         
