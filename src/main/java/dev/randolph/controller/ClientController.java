@@ -4,6 +4,7 @@ import java.util.List;
 
 import dev.randolph.model.Client;
 import dev.randolph.service.ClientService;
+import io.javalin.core.validation.Validator;
 import io.javalin.http.Context;
 
 public class ClientController {
@@ -72,8 +73,8 @@ public class ClientController {
      */
     public void getClientById(Context ctx) {
         // Init
-        int cid = Integer.parseInt(ctx.pathParam("cid"));
-        Client client = cs.getClientById(cid);
+        Validator<Integer> cid = ctx.pathParamAsClass("cid", Integer.class);
+        Client client = cs.getClientById(cid.get());
         
         // Checking if client was found
         if (client == null) {
@@ -100,9 +101,9 @@ public class ClientController {
      */
     public void updateClientById(Context ctx) {
         // Init
-        int cid = Integer.parseInt(ctx.pathParam("cid"));
+        Validator<Integer> cid = ctx.pathParamAsClass("cid", Integer.class);
         Client client = ctx.bodyAsClass(Client.class);
-        client.setId(cid);
+        client.setId(cid.get());
         boolean success = cs.updateClientById(client);
         
         // Checking if client was updated
@@ -128,8 +129,8 @@ public class ClientController {
      */
     public void deleteClientById(Context ctx) {
         // Init
-        int cid = Integer.parseInt(ctx.pathParam("cid"));
-        boolean success = cs.deleteClientById(cid);
+        Validator<Integer> cid = ctx.pathParamAsClass("cid", Integer.class);
+        boolean success = cs.deleteClientById(cid.get());
         
         // Checking if client was deleted
         if (!success) {
