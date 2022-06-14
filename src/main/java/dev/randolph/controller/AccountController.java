@@ -3,7 +3,12 @@ package dev.randolph.controller;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import dev.randolph.model.Account;
+import dev.randolph.model.BalanceTransfer;
 import dev.randolph.service.AccountService;
 import io.javalin.core.validation.Validator;
 import io.javalin.http.Context;
@@ -49,14 +54,14 @@ public class AccountController {
     /**
      * Retrieves all the accounts associated with a specific client.
      * Takes the client id from the path.
+     * Possible to take query parameters to find accounts within a range.
      * @param ctx The http request/response.
-     * @return A 200 response with the accounts in the body.
+     * @return A 200 response with the accounts in the body and a 404 otherwise.
      */
     public void getAllClientAccounts(Context ctx) {
         // Init
         Validator<Integer> cid = ctx.pathParamAsClass("cid", Integer.class);
         Map<String, List<String>> queryParams = ctx.queryParamMap();
-        
         List<Account> accounts;
         Integer upperBound, lowerBound;
         
@@ -84,22 +89,101 @@ public class AccountController {
         }
     }
     
+    /**
+     * Retrieves the account with a specific id from a client id.
+     * Takes the client id and account id from the path.
+     * @param ctx The http request/response
+     * @return A 200 response with the found account, and a 404 otherwise.
+     */
     public void getClientAccountById(Context ctx) {
+        // Init
+        Validator<Integer> cid = ctx.pathParamAsClass("cid", Integer.class);
+        Validator<Integer> aid = ctx.pathParamAsClass("aid", Integer.class);
+        Account account = as.getClientAccountById(cid.get(), aid.get());
+        
+        // Checking if account was found
+        if (account == null) {
+            // Account wasn't found
+            ctx.status(404);
+        }
+        else {
+            // Account found
+            ctx.status(200);
+            ctx.json(account);
+        }
     }
     
     /*
      * === PUT / PATCH ===
      */
     
+    /**
+     * Updates a specific client account.
+     * Takes the id of the client and account from the path.
+     * Takes the accountType and balance from the body.
+     * @param ctx The http request/response
+     * @return a 204 response if account was update successfully, and 404 otherwise.
+     */
     public void updateClientAccountById(Context ctx) {
+        // Init
+        Validator<Integer> cid = ctx.pathParamAsClass("cid", Integer.class);
+        Validator<Integer> aid = ctx.pathParamAsClass("aid", Integer.class);
+        Account account = ctx.bodyAsClass(Account.class);
+        account.setClientId(cid.get());
+        account.setId(aid.get());
+        boolean success = as.updateClientAccountById(account);
+        
+        // Checking if account was updated
+        if (!success) {
+            // Failed to update account
+            ctx.status(404);
+        }
+        else {
+            // Successfully updated account
+            ctx.status(204);
+        }
+        
     }
     
+    /**
+     * Updates the balance of a specific client account.
+     * The balance is updated as a deposit or withdraw.
+     * Takes the id of the client and account from the path.
+     * Takes the deposit/withdraw balance from the body.
+     * @param ctx The http request/response
+     * @return 204 response if balance was updated, 404 if client/account wasn't found, and 422 if there were insufficant funds
+     */
     public void updateClientAccountBalance(Context ctx) {
+        // Init
+        Validator<Integer> cid = ctx.pathParamAsClass("cid", Integer.class);
+        Validator<Integer> aid = ctx.pathParamAsClass("aid", Integer.class);
+        BalanceTransfer bt = ctx.bodyAsClass(BalanceTransfer.class);
+        Account account = new Account(aid.get(), cid.get(), null, bt.getDouble());
+        int success = as.updateClientAccountBalance(account);
         
+        // Checking if account balance was updated
+        if (success == -2) {
+            // Service unavailable
+            ctx.status(503);
+        }
+        else if (success == -1) {
+            // Couldn't find client/account
+            ctx.status(404);
+        }
+        else if (success == 0) {
+            // Insufficient funds
+            ctx.status(422);
+        }
+        else {
+            // Successfully updated account balance
+            ctx.status(204);
+        }
     }
     
     public void transferClientAccountFunds(Context ctx) {
-        
+        Validator<Integer> cid = ctx.pathParamAsClass("cid", Integer.class);
+        Validator<Integer> aid = ctx.pathParamAsClass("aid", Integer.class);
+        Validator<Integer> tid = ctx.pathParamAsClass("tid", Integer.class);
     }
     
     /*

@@ -130,20 +130,107 @@ public class AccountDAO {
         return accounts;
     }
     
+    /**
+     * Gets an account associated with a given client.
+     * @param cid The specific client the account is associated with.
+     * @param aid The specific account
+     * @return The account if found, and null otherwise.
+     */
     public Account getClientAccountById(int cid, int aid) {
-        return null;
+        // Init
+        String sql = "SELECT * FROM accounts"
+                + " WHERE client_id = ? AND id = ?";
+        Account account = null;
+        
+        // Executing query
+        try (Connection conn = cu.getConnection()) {
+            // Getting results
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, cid);
+            ps.setInt(2, aid);
+            ResultSet rs = ps.executeQuery();
+            
+            // Going through results
+            if (rs.next()) {
+                // Account found
+                account = new Account(rs.getInt("id"),
+                        rs.getInt("client_id"),
+                        AccountType.valueOf(rs.getString("type")),
+                        rs.getDouble("balance"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return account;
     }
     
     /*
      * === UPDATE ===
      */
     
-    public Account updateClientAccountById(Account account) {
-        return null;
+    /**
+     * Updates the account with the given client and account id with updated information.
+     * @param account The account to update
+     * @return True if the account was updated successfully, and false otherwise.
+     */
+    public boolean updateClientAccountById(Account account) {
+        // Init
+        String sql = "UPDATE accounts"
+                + " SET (type, balance) = (?, ?)"
+                + " WHERE client_id = ? AND id = ?";
+        
+        // Executing query
+        try (Connection conn = cu.getConnection()) {
+            // Getting results
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, account.getAccountType().name());
+            ps.setDouble(2, account.getBalance());
+            ps.setInt(3, account.getClientId());
+            ps.setInt(4, account.getId());
+            int changes = ps.executeUpdate();
+            
+            // going through results
+            if (changes != 0) {
+                // Successfully updated account
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
     
-    public Account updateAccountAmount() {
-        return null;
+    /**
+     * Updates the account balance in the database.
+     * @param account The account information to update
+     * @return True of successful and false otherwise.
+     */
+    public boolean updateClientAccountBalance(Account account) {
+        // Init
+        String sql = "UPDATE clients"
+                + " SET (balance) = (?)"
+                + " WHERE client_id = ? AND id = ?";
+        
+        // Executing query
+        try (Connection conn = cu.getConnection()) {
+            // Getting results
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setDouble(1, account.getBalance());
+            ps.setInt(2, account.getClientId());
+            ps.setInt(3, account.getId());
+            int changes = ps.executeUpdate();
+            
+            // Going through results
+            if (changes != 0) {
+                // Successfully updated account
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return false;
     }
     
     public Account transferAccountAmount() {

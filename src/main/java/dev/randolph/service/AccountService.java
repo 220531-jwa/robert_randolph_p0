@@ -85,20 +85,83 @@ public class AccountService {
         return accounts;
     }
     
+    /**
+     * Gets a specific account associated with a client.
+     * If the client doesn't exists returns null.
+     * @param cid The client to search for.
+     * @param aid The account to search for associated with the client.
+     * @return The found account, and null otherwise.
+     */
     public Account getClientAccountById(int cid, int aid) {
-        return null;
+        // Validating input
+        if (cid < 0 || aid < 0) {
+            return null;
+        }
+        
+        // Checking if client exists
+        if (cd.getClientById(cid) == null) {
+            // Client not found
+            return null;
+        }
+        
+        return ad.getClientAccountById(cid, aid);
     }
     
     /*
      * === PUT / PATCH / UPDATE ===
      */
     
-    public Account updateClientAccountById(Account account) {
-        return null;
+    /**
+     * Updates the account in the database associated with a specific client.
+     * @param account The account to update along with the updated information.
+     * @return True if the account was updated successfully, and false otherwise.
+     */
+    public boolean updateClientAccountById(Account account) {
+        // Validating input
+        if (account == null) {
+            return false;
+        }
+        
+        return ad.updateClientAccountById(account);
     }
     
-    public Account updateAccountAmount() {
-        return null;
+    /**
+     * Updates the account balance by a given amount.
+     * @param account The account to change the balance of.
+     * @return -2 if service is unavailable, -1 if client/account doesn't exist, 0 if not enough funds for withdraw, 1 if successful.
+     */
+    public int updateClientAccountBalance(Account account) {
+        // Validating input
+        if (account == null) {
+            return -1;
+        }
+        
+        // Checking if client and account exist
+        Account acc = ad.getClientAccountById(account.getClientId(), account.getId());
+        if (acc == null) {
+            // Client/Account not found
+            return -1;
+        }
+        
+        // Checking if sufficient funds are available
+        double updatedBalance = acc.getBalance() + account.getBalance();
+        if (updatedBalance < 0) {
+            // Not enough funds to withdraw
+            return 0;
+        }
+        
+        // Updating balance
+        account.setBalance(updatedBalance);
+        boolean success = ad.updateClientAccountBalance(account);
+        
+        // Checking if service was down
+        if (!success) {
+            // For whatever reason failed to update
+            return -2;
+        }
+        
+        // Success
+        return 1;
     }
     
     public Account transferAccountAmount() {

@@ -61,8 +61,8 @@ public class ClientService {
     
     /**
      * Updates a client in the database.
-     * @param client The client to update alonge with the updated information.
-     * @return The updated client if successful, and null otherwise.
+     * @param client The client to update along with the updated information.
+     * @return True if client was updated successfully, and false otherwise.
      */
     public boolean updateClientById(Client client) {
         // Validating input
