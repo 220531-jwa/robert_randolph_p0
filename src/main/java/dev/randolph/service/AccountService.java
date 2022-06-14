@@ -137,14 +137,14 @@ public class AccountService {
         }
         
         // Checking if client and account exist
-        Account acc = ad.getClientAccountById(account.getClientId(), account.getId());
-        if (acc == null) {
+        Account targetAcc = ad.getClientAccountById(account.getClientId(), account.getId());
+        if (targetAcc == null) {
             // Client/Account not found
             return -1;
         }
         
         // Checking if sufficient funds are available
-        double updatedBalance = acc.getBalance() + account.getBalance();
+        double updatedBalance = targetAcc.getBalance() + account.getBalance();
         if (updatedBalance < 0) {
             // Not enough funds to withdraw
             return 0;
@@ -164,15 +164,65 @@ public class AccountService {
         return 1;
     }
     
-    public Account transferAccountAmount() {
-        return null;
+    /**
+     * Transfers funds between two accounts
+     * @param account The source account with the balance to transfer.
+     * @param tid The target account to transfer the funds to.
+     * @return -2 if service is unavailable, -1 if client/account doesn't exist, 0 if not enough funds for withdraw, 1 if successful.
+     */
+    public int transferClientAccountFunds(Account account, int tid) {
+        // Validating input
+        if (account == null || tid < 0) {
+            return -1;
+        }
+        
+        // Checking if client and account exist
+        Account srcAcc = ad.getClientAccountById(account.getClientId(), account.getId());
+        Account targetAcc = ad.getClientAccountById(account.getClientId(), tid);
+        if (srcAcc == null || targetAcc == null) {
+            // Client/Account not found
+            return -1;
+        }
+        
+        // Checking if sufficient funds are available
+        double srcUpdatedBalance = srcAcc.getBalance() - account.getBalance();
+        double targetUpdatedBalance = targetAcc.getBalance() + account.getBalance();
+        if (srcUpdatedBalance < 0) {
+            // Not enough funds to transfer
+            return 0;
+        }
+        
+        // Updating balance
+        srcAcc.setBalance(srcUpdatedBalance);
+        targetAcc.setBalance(targetUpdatedBalance);
+        boolean success = ad.transferAccountAmount(srcAcc, targetAcc);
+        
+        // Checking if service was down
+        if (!success) {
+            // For whatever reason failed to update
+            return -2;
+        }
+        
+        // Success
+        return 1;
     }
     
     /*
      * === DELETE ===
      */
     
+    /**
+     * Deletes the account form the database.
+     * @param cid The client the account is associated with
+     * @param aid The account id
+     * @return True if the account was successfully deleted and false otherwise.
+     */
     public boolean deleteClientAccountById(int cid, int aid) {
-        return false;
+        // Validating input
+        if (cid < 0 || aid < 0) {
+            return false;
+        }
+        
+        return ad.deleteClientAccountById(cid, aid);
     }
 }

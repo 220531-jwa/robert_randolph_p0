@@ -208,8 +208,8 @@ public class AccountDAO {
      */
     public boolean updateClientAccountBalance(Account account) {
         // Init
-        String sql = "UPDATE clients"
-                + " SET (balance) = (?)"
+        String sql = "UPDATE accounts"
+                + " SET balance = ?"
                 + " WHERE client_id = ? AND id = ?";
         
         // Executing query
@@ -233,15 +233,119 @@ public class AccountDAO {
         return false;
     }
     
-    public Account transferAccountAmount() {
-        return null;
+    /**
+     * Transfers funds from srcAccount to targetAcc through a transaction.
+     * @param srcAcc The source account to change
+     * @param targetAcc The target account to change
+     * @return True if the transaction was successful, and false otherwise.
+     */
+    public boolean transferAccountAmount(Account srcAcc, Account targetAcc) {
+        // Init
+        String sql = "UPDATE accounts"
+                + " SET balance = ?"
+                + " WHERE client_id = ? AND id = ?";
+        Connection conn = cu.getConnection();
+        
+        // Executing query
+        try {
+            // Preparing transaction
+            conn.setAutoCommit(false);
+            
+            // Updating src account
+            System.out.println("update src");
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setDouble(1, srcAcc.getBalance());
+            ps.setInt(2, srcAcc.getClientId());
+            ps.setInt(3, srcAcc.getId());
+            int changes = ps.executeUpdate();
+            System.out.println("updated");
+            
+            // Checking if src was updated
+            if (changes != 0) {
+                System.out.println("update success");
+                // Successfully updated src
+                // Updating target account
+                System.out.println("updating target");
+                ps = conn.prepareStatement(sql);
+                ps.setDouble(1, targetAcc.getBalance());
+                ps.setInt(2, targetAcc.getClientId());
+                ps.setInt(3, targetAcc.getId());
+                changes = ps.executeUpdate();
+                System.out.println("updated");
+                
+                // Checking if target was updated
+                if (changes != 0) {
+                    System.out.println("upaate success");
+                    // Successfully updated target => commit
+                    conn.commit();
+                    return true;
+                }
+                else {
+                    System.out.println("target update failed");
+                    // Failed to update target => rollback
+                    conn.rollback();
+                }
+            }
+            else {
+                System.out.println("src upate failed");
+                // Failed to update src => rollback
+                conn.rollback();
+            }
+        } catch (SQLException e) {
+            // Attempting to rollback
+            System.out.println("mega fail");
+            try {
+                if (conn != null) {
+                    conn.rollback();
+                }
+            } catch (SQLException e2) {
+                e2.printStackTrace();
+            }
+        } finally {
+            // Closing connection
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        return false;
     }
     
     /*
      * === DELETE ===
      */
     
+    /**
+     * Deletes the client account from the database.
+     * @param cid The client associated with the account.
+     * @param aid The account to delete
+     * @return True if the account was successfully deleted, and false otherwise.
+     */
     public boolean deleteClientAccountById(int cid, int aid) {
-        return false;
+        // Init
+        String sql = "DELETE FROM accounts"
+                + " WHERE client_id = ? and id = ?";
+        boolean success = false;
+        
+        // Executing query
+        try (Connection conn = cu.getConnection()) {
+            // Getting results
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, cid);
+            ps.setInt(2, aid);
+            int changes = ps.executeUpdate();
+            
+            // Checking if account was deleted
+            if (changes != 0) {
+                // Deletion successful
+                success = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return success;
     }
 }

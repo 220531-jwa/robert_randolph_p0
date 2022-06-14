@@ -1,11 +1,6 @@
 package dev.randolph.controller;
 
 import java.util.List;
-import java.util.Map;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dev.randolph.model.Account;
 import dev.randolph.model.BalanceTransfer;
@@ -61,7 +56,6 @@ public class AccountController {
     public void getAllClientAccounts(Context ctx) {
         // Init
         Validator<Integer> cid = ctx.pathParamAsClass("cid", Integer.class);
-        Map<String, List<String>> queryParams = ctx.queryParamMap();
         List<Account> accounts;
         Integer upperBound, lowerBound;
         
@@ -180,18 +174,66 @@ public class AccountController {
         }
     }
     
+    /**
+     * Transfers funds between two accounts.
+     * Takes the id of the client and accounts from path.
+     * Takes amount to transfer from body.
+     * @param ctx The http request/response
+     * @return 204 response if balance was updated, 404 if client/account wasn't found, and 422 if there were insufficant funds
+     */
     public void transferClientAccountFunds(Context ctx) {
+        // Init
         Validator<Integer> cid = ctx.pathParamAsClass("cid", Integer.class);
         Validator<Integer> aid = ctx.pathParamAsClass("aid", Integer.class);
         Validator<Integer> tid = ctx.pathParamAsClass("tid", Integer.class);
+        BalanceTransfer bt = ctx.bodyAsClass(BalanceTransfer.class);
+        Account srcAccount = new Account(aid.get(), cid.get(), null, bt.getDouble());
+        int success = as.transferClientAccountFunds(srcAccount, tid.get());
+        
+        // Checking if account balance was updated
+        if (success == -2) {
+            // Service unavailable
+            ctx.status(503);
+        }
+        else if (success == -1) {
+            // Couldn't find client/account
+            ctx.status(404);
+        }
+        else if (success == 0) {
+            // Insufficient funds
+            ctx.status(422);
+        }
+        else {
+            // Successfully updated account balance
+            ctx.status(204);
+        }
     }
     
     /*
      * === DELETE ===
      */
     
+    /**
+     * Deletes a client account
+     * Takes the id of the client and account form path.
+     * @param ctx The http request/response
+     * @return A 205 response if account was deleted successfully and 404 otherwise.
+     */
     public void deleteClientAccountById(Context ctx) {
+        // Init
+        Validator<Integer> cid = ctx.pathParamAsClass("cid", Integer.class);
+        Validator<Integer> aid = ctx.pathParamAsClass("aid", Integer.class);
+        boolean success = as.deleteClientAccountById(cid.get(), aid.get());
         
+        // Checking if account was deleted
+        if (!success) {
+            // Failed to delete account
+            ctx.status(404);
+        }
+        else {
+            // Successfully deleted account
+            ctx.status(205);
+        }
     }
 
 }
