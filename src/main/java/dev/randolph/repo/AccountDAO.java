@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dev.randolph.model.Account;
+import dev.randolph.model.AccountType;
 import dev.randolph.util.ConnectionUtil;
 
 public class AccountDAO {
