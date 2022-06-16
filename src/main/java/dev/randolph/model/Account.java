@@ -1,7 +1,5 @@
 package dev.randolph.model;
 
-import dev.randolph.repo.AccountType;
-
 public class Account {
     
     private int id;

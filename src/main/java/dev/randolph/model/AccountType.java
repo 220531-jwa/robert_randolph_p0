@@ -1,4 +1,4 @@
-package dev.randolph.repo;
+package dev.randolph.model;
 
 public enum AccountType {
     CHECKING,
