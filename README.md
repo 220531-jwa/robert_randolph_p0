@@ -53,3 +53,8 @@ Create basic back-end banking api for users to access database client and accoun
 #### Utility
 
 - **DatabaseConnection:** Simplifies creatting connections to database
+
+## Notes
+
+Postman tests are run assuming database is an an inital state (see postgres/project0.sql)
+- Invalid tests are run first, then valid ones
