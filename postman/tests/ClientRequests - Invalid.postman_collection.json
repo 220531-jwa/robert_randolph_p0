@@ -1,0 +1,118 @@
+{
+	"info": {
+		"_postman_id": "f792a89b-9d13-4a32-a227-b29b9c652b1a",
+		"name": "ClientRequests - Invalid",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21264124"
+	},
+	"item": [
+		{
+			"name": "Get Client By Id - Client doesn't exist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/clients/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"clients",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Client By Id - Client doesn't exist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Alan\",\r\n    \"lastName\": \"Apricot\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/clients/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"clients",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Client - Client Doesn't Exist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/clients/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"clients",
+						"4"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

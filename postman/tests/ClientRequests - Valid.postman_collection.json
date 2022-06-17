@@ -1,0 +1,211 @@
+{
+	"info": {
+		"_postman_id": "e2912419-d2be-465b-adba-0468b9f51fdf",
+		"name": "ClientRequests - Valid",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21264124"
+	},
+	"item": [
+		{
+			"name": "Create New Client",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body firstName and lastName are the same as request.\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.id).to.eql(4);\r",
+							"    pm.expect(jsonData.firstName).to.eql(\"David\");\r",
+							"    pm.expect(jsonData.lastName).to.eql(\"Drink\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"David\",\r\n    \"lastName\": \"Drink\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/clients",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"clients"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Clients",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Note: Assumes there is at least 1 client in database.\r",
+							"// If there isn't any, will return 404.\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body isn't empty\", function () {\r",
+							"    pm.response.to.have.jsonBody;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/clients",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"clients"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Client By Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body isn't empty\", function () {\r",
+							"    pm.response.to.have.jsonBody;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/clients/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"clients",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Client By Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Alan\",\r\n    \"lastName\": \"Apricot\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/clients/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"clients",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Client",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Note: Cascades down to accounts.\r",
+							"\r",
+							"pm.test(\"Status code is 205\", function () {\r",
+							"    pm.response.to.have.status(205);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/clients/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"clients",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

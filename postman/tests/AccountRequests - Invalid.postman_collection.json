@@ -1,0 +1,561 @@
+{
+	"info": {
+		"_postman_id": "8723a45b-94de-4b0c-99a2-2c3cbae46dfa",
+		"name": "AccountRequests - Invalid",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21264124"
+	},
+	"item": [
+		{
+			"name": "Create new Account - Client Doesn't exist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"clientId\": 1,\r\n    \"accountType\": \"CHECKING\",\r\n    \"balance\": 100\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/clients/4/accounts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"clients",
+						"4",
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Client Accounts By Id Copy - Client doesn't exist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/clients/4/accounts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"clients",
+						"4",
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Client Account By Id- Client doesn't exist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/clients/4/accounts/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"clients",
+						"4",
+						"accounts",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Client Account By Id - Account doesn't exist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/clients/1/accounts/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"clients",
+						"1",
+						"accounts",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Client Account By Id Copy - Client doesn't exist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountType\": \"CHECKING\",\r\n    \"balance\": 1000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/clients/4/accounts/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"clients",
+						"4",
+						"accounts",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Client Account By Id Copy - account doesn't exist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountType\": \"CHECKING\",\r\n    \"balance\": 1000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/clients/1/accounts/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"clients",
+						"1",
+						"accounts",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deposit Amount Into Client Account - Client doesn't exist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"deposit\": 500\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/clients/4/accounts/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"clients",
+						"4",
+						"accounts",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deposit Amount Into Client Account - account doesn't exist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"deposit\": 500\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/clients/1/accounts/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"clients",
+						"1",
+						"accounts",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Withdraw Amount From Client Account - Insufficant funds",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 422\", function () {\r",
+							"    pm.response.to.have.status(422);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"withdraw\": 3000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/clients/1/accounts/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"clients",
+						"1",
+						"accounts",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transfer Amount - Client doesn't exist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"amount\": 30\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/clients/4/accounts/1/transfer/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"clients",
+						"4",
+						"accounts",
+						"1",
+						"transfer",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transfer Amount - Source account doesn't exist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"amount\": 30\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/clients/1/accounts/3/transfer/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"clients",
+						"1",
+						"accounts",
+						"3",
+						"transfer",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transfer Amount - Target account doesn't exist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"amount\": 30\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/clients/1/accounts/1/transfer/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"clients",
+						"1",
+						"accounts",
+						"1",
+						"transfer",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transfer Amount - Insufficent Funds",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 422\", function () {\r",
+							"    pm.response.to.have.status(422);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"amount\": 3000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/clients/1/accounts/1/transfer/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"clients",
+						"1",
+						"accounts",
+						"1",
+						"transfer",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
