@@ -253,48 +253,39 @@ public class AccountDAO {
             conn.setAutoCommit(false);
             
             // Updating src account
-            System.out.println("update src");
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setDouble(1, srcAcc.getBalance());
             ps.setInt(2, srcAcc.getClientId());
             ps.setInt(3, srcAcc.getId());
             int changes = ps.executeUpdate();
-            System.out.println("updated");
             
             // Checking if src was updated
             if (changes != 0) {
-                System.out.println("update success");
                 // Successfully updated src
                 // Updating target account
-                System.out.println("updating target");
                 ps = conn.prepareStatement(sql);
                 ps.setDouble(1, targetAcc.getBalance());
                 ps.setInt(2, targetAcc.getClientId());
                 ps.setInt(3, targetAcc.getId());
                 changes = ps.executeUpdate();
-                System.out.println("updated");
                 
                 // Checking if target was updated
                 if (changes != 0) {
-                    System.out.println("upaate success");
                     // Successfully updated target => commit
                     conn.commit();
                     return true;
                 }
                 else {
-                    System.out.println("target update failed");
                     // Failed to update target => rollback
                     conn.rollback();
                 }
             }
             else {
-                System.out.println("src upate failed");
                 // Failed to update src => rollback
                 conn.rollback();
             }
         } catch (SQLException e) {
             // Attempting to rollback
-            System.out.println("mega fail");
             try {
                 if (conn != null) {
                     conn.rollback();
