@@ -7,7 +7,11 @@ import dev.randolph.repo.ClientDAO;
 
 public class ClientService {
     
-    private ClientDAO cd = new ClientDAO();
+    private ClientDAO cd;
+    
+    public ClientService(ClientDAO cd) {
+        this.cd = cd;
+    }
     
     /*
      * === POST / CREATE ===
@@ -70,7 +74,7 @@ public class ClientService {
             return false;
         }
         
-        return cd.updateClient(client);
+        return cd.updateClientById(client);
     }
     
     /*

@@ -4,13 +4,15 @@ import java.util.List;
 
 import dev.randolph.model.Account;
 import dev.randolph.model.BalanceTransfer;
+import dev.randolph.repo.AccountDAO;
+import dev.randolph.repo.ClientDAO;
 import dev.randolph.service.AccountService;
 import io.javalin.core.validation.Validator;
 import io.javalin.http.Context;
 
 public class AccountController {
     
-    private AccountService as = new AccountService();
+    private AccountService as = new AccountService(new ClientDAO(), new AccountDAO());
     
     /*
      * === POST ===

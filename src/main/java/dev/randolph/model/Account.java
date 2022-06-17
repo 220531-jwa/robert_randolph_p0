@@ -15,6 +15,13 @@ public class Account {
         this.accountType = accountType;
         this.balance = balance;
     }
+    
+    public Account(Account account) {
+        id = account.getId();
+        clientId = account.getClientId();
+        accountType = account.getAccountType();
+        balance = account.getBalance();
+    }
 
     public int getId() {
         return id;

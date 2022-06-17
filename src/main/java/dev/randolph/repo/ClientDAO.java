@@ -129,7 +129,7 @@ public class ClientDAO {
      * @param client The client to update
      * @return True if the client was updated successfully, and false otherwise.
      */
-    public boolean updateClient(Client client) {
+    public boolean updateClientById(Client client) {
         // Init
         String sql = "UPDATE clients"
                 + " SET (first_name, last_name) = (?, ?)"

@@ -8,11 +8,12 @@ import dev.randolph.repo.ClientDAO;
 
 public class AccountService {
     
-    private AccountDAO ad = new AccountDAO();
-    private ClientDAO cd = new ClientDAO();
+    private ClientDAO cd;
+    private AccountDAO ad;
     
-    public AccountService() {
-        
+    public AccountService(ClientDAO cd, AccountDAO ad) {
+        this.cd = cd;
+        this.ad = ad;
     }
     
     /*

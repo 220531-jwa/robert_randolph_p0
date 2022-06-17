@@ -3,13 +3,14 @@ package dev.randolph.controller;
 import java.util.List;
 
 import dev.randolph.model.Client;
+import dev.randolph.repo.ClientDAO;
 import dev.randolph.service.ClientService;
 import io.javalin.core.validation.Validator;
 import io.javalin.http.Context;
 
 public class ClientController {
     
-    private ClientService cs = new ClientService();
+    private ClientService cs = new ClientService(new ClientDAO());
     
     /*
      * === POST ===
